@@ -43,6 +43,9 @@ template <typename T> class LinkedList {
             }
         }
         
+        /**
+         * 가장 뒤에 값 넣기
+        */
         void push_back(T data) {
             Node<T>* newNode = new Node<T>(data);
 
@@ -62,6 +65,9 @@ template <typename T> class LinkedList {
             this->tail->setNextNode(newNode);
         }
 
+        /**
+         * 가장 앞에 값 넣기
+        */
         void push_front(T data) {
             Node<T>* newNode = new Node<T>(data);
 
@@ -82,13 +88,18 @@ template <typename T> class LinkedList {
             this->header = newNode;
         }
 
+        /**
+         * 사이즈 가져오기
+        */
         int size() {
             return this->length;
         }
 
+        /**
+         * 전부 출력하기
+        */
         void displayAll() {
             Node<T>* node = this->header;
-
             for(int i = 0; i < this->length; i++) {
                 cout << node->getData() << ' ';
 
