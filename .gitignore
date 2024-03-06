@@ -1,1 +1,16 @@
-binary_file
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.cpp
+
+# Unignore all dirs
+!*/
+
+.vscode
+
+.DS_Store
+
+!*/
+!*.cpp
+!*.h
