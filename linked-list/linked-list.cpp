@@ -32,7 +32,7 @@ template <typename T> class LinkedList {
         LinkedList() {
             this->header = nullptr;
             this->tail = nullptr;
-            this->size = 0;
+            this->length = 0;
         }
         ~LinkedList() {
             Node<T>* currNode = this->header;
@@ -46,7 +46,7 @@ template <typename T> class LinkedList {
         void push_back(T data) {
             Node<T>* newNode = new Node<T>(data);
 
-            this->size++;
+            this->length++;
             if (this->header == nullptr) {
                 this->header = newNode;
                 this->tail = newNode;
@@ -65,7 +65,7 @@ template <typename T> class LinkedList {
         void push_front(T data) {
             Node<T>* newNode = new Node<T>(data);
 
-            this->size++;
+            this->length++;
             if (this->header == nullptr) {
                 this->header = newNode;
                 this->tail = newNode;
@@ -82,10 +82,14 @@ template <typename T> class LinkedList {
             this->header = newNode;
         }
 
+        int size() {
+            return this->length;
+        }
+
         void displayAll() {
             Node<T>* node = this->header;
 
-            for(int i = 0; i < this->size; i++) {
+            for(int i = 0; i < this->length; i++) {
                 cout << node->getData() << ' ';
 
                 node = node->next();
@@ -96,16 +100,9 @@ template <typename T> class LinkedList {
     private: 
         Node<T>* header;
         Node<T>* tail;
-        int size;
+        int length;
 };
 
 int main() {
     LinkedList<int> l1;
-
-    l1.push_back(1);
-    l1.push_back(2);
-    l1.push_back(3);
-    l1.push_front(4);
-    l1.push_front(5);
-    l1.displayAll();
 }
