@@ -96,6 +96,39 @@ template <typename T> class LinkedList {
         }
 
         /**
+         * 값 추가하기
+        */
+        void insert_after(Node<T>* node, T data) {
+            Node<T>* newNode = new Node<T>(data);
+
+            this->length++;
+            if (node->next() == nullptr) {
+                node->setNextNode(newNode);
+                this->tail = newNode;
+                return;
+            }
+
+            newNode->setNextNode(node->next());
+            node->setNextNode(newNode);
+        }
+        
+        /**
+         * 값 탐색하기
+        */
+        Node<T>* find_data(T data) {
+            Node<T>* currNode = this->header;
+            while (currNode != nullptr) {
+                if (currNode->getData() == data) {
+                    return currNode;
+                }
+
+                currNode = currNode->next();
+            }
+
+            return nullptr;
+        }
+
+        /**
          * 전부 출력하기
         */
         void displayAll() {
@@ -116,4 +149,18 @@ template <typename T> class LinkedList {
 
 int main() {
     LinkedList<int> l1;
+
+    l1.push_back(1);
+    l1.push_back(2);
+    l1.push_back(3);
+
+    Node<int>* node = l1.find_data(2);
+    
+    if (node == nullptr) {
+        cout << "no" << '\n';
+        return 1;
+    }
+
+    l1.insert_after(node, 100);
+    l1.displayAll();
 }
