@@ -24,9 +24,6 @@ template <typename T> class Iterator {
         Iterator(Node<T>* node) {
             this->curr_node = node;
         }
-        Iterator() {
-            this->curr_node = nullptr;
-        }
 
         bool has_next() {
             if (this->curr_node->next == nullptr) {
@@ -40,12 +37,12 @@ template <typename T> class Iterator {
             return this->curr_node->data;
         }
 
-        Iterator<T> move_next() {
+        void move_next() {
             if (this->has_next()) {
-                this->curr_node =this->curr_node->next;
+                this->curr_node = this->curr_node->next;
             }
 
-            return nullptr;
+            return;
         }
 
         // 전위 증가 연산자 오버로딩
@@ -115,7 +112,44 @@ template <typename T> class LinkedList {
          * 가장 뒤 값 지우기
         */
         void remove_back() {
-            
+            if (this->head == nullptr) {
+                return;
+            }
+
+            this->length--;
+            if (this->head == this->tail) {
+                this->head = this->tail = nullptr;
+                return;
+            }
+
+            Node<T>* curr_node = this->head;
+
+            while (true) {
+                if (curr_node->next == this->tail) {
+                    break;
+                }
+
+                curr_node = curr_node->next;
+            }   
+
+            Node<T>* old_tail = this->tail;
+            curr_node->next = nullptr;
+            this->tail = curr_node;
+            delete old_tail;
+        }
+
+        /**
+         * 가장 앞 값 지우기
+        */
+        void remove_front() {
+            if (this->head == nullptr) {
+                return;
+            }
+
+            Node<T>* old_head = this->head;
+            this->head = old_head->next;
+            delete old_head;
+            return;
         }
 
         /**
@@ -203,15 +237,16 @@ template <typename T> class LinkedList {
          * 전부 출력하기
         */
         void displayAll() {
-            Node<T>* node = this->head;
-            for(int i = 0; i < this->length; i++) {
-                cout << node->data << ' ';
+            LinkedList<T>::iterator it = this->begin();
 
-                if (node->next != nullptr) {
-                    node = node->next;
-                }
+            if (this->head == nullptr) return;
+
+            while (it.has_next()) {
+                cout << it.get() << ' ';
+                it++;
             }
-            cout << '\n';
+            cout << it.get() << ' ';
+
             return;
         }
 
@@ -230,14 +265,14 @@ int main() {
     list.push_back(1);
     list.push_back(2);
     list.push_back(3);
-
+    list.push_front(4);
+    list.push_front(5);
+    list.remove_front();
+    list.remove_front();
+    list.remove_back();
+    list.remove_back();
+    
     list.displayAll();
 
     LinkedList<int>::iterator it = list.begin();
-
-    while (!it.has_next()) {
-        cout << it.get() << ' ';
-        it++;
-    }
-    cout << '\n';
 }
