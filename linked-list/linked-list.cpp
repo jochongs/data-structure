@@ -26,9 +26,66 @@ template <typename T> class Node {
         Node<T>* nextNode;
 };
 
+template <typename T> class Iterator {
+    public: 
+        Iterator(Node<T>* node) {
+            this->currNode = node;
+        }
+        Iterator() {
+            this->currNode = nullptr;
+        }
+
+        bool has_next() {
+            if (this->currNode->next() == nullptr) {
+                return false;
+            }
+
+            return true;
+        }
+
+        T get() {
+            return this->currNode->getData();
+        }
+
+        Iterator<T> next() {
+            if (this->has_next()) {
+                this->currNode =this->currNode->next();
+            }
+
+            return nullptr;
+        }
+
+        // 전위 증가 연산자 오버로딩
+        Iterator<T>& operator++() {
+            if (this->currNode != nullptr) {
+                currNode = currNode->next();
+            }
+            return *this;
+        }
+
+        // 후위 증가 연산자 오버로딩
+        Iterator<T> operator++(int) {
+            Iterator<T> temp = *this; // 현재 객체의 복사본 생성
+            if (this->has_next()) {
+                this->next();
+            }
+            return temp;        
+        }
+
+        bool operator==(Iterator<T> it) {
+            return (it.currNode == this->currNode);
+        }
+        
+        bool operator!=(Iterator<T> it) {
+            return (it.currNode != this->currNode);
+        }
+    private:
+        Node<T>* currNode;
+};
+
 // 단방향 링크드 리스트
 template <typename T> class LinkedList {
-    public: 
+    public: ;
         LinkedList() {
             this->header = nullptr;
             this->tail = nullptr;
@@ -42,6 +99,8 @@ template <typename T> class LinkedList {
                 currNode = nextNode;
             }
         }
+
+        typedef Iterator<T> iterator;
         
         /**
          * 가장 뒤에 값 넣기
@@ -63,6 +122,7 @@ template <typename T> class LinkedList {
             }
 
             this->tail->setNextNode(newNode);
+            this->tail = newNode;
         }
 
         /**
@@ -129,6 +189,20 @@ template <typename T> class LinkedList {
         }
 
         /**
+         * 시작 값 가져오기
+        */
+        iterator begin() {
+            return iterator(this->header);
+        }
+       
+        /**
+         * 끝 값 가져오기
+        */
+        iterator end() {
+            return iterator(this->tail);
+        }
+
+        /**
          * 전부 출력하기
         */
         void displayAll() {
@@ -136,10 +210,16 @@ template <typename T> class LinkedList {
             for(int i = 0; i < this->length; i++) {
                 cout << node->getData() << ' ';
 
-                node = node->next();
+                if (node->next() != nullptr) {
+                    node = node->next();
+                }
             }
             cout << '\n';
             return;
+        }
+
+        Node<T>* getTail() {
+            return this->tail;
         }
     private: 
         Node<T>* header;
@@ -148,19 +228,19 @@ template <typename T> class LinkedList {
 };
 
 int main() {
-    LinkedList<int> l1;
+    LinkedList<int> list;
 
-    l1.push_back(1);
-    l1.push_back(2);
-    l1.push_back(3);
+    list.push_back(1);
+    list.push_back(2);
+    list.push_back(3);
 
-    Node<int>* node = l1.find_data(2);
-    
-    if (node == nullptr) {
-        cout << "no" << '\n';
-        return 1;
+    list.displayAll();
+
+    LinkedList<int>::iterator it = list.begin();
+
+    while (!it.has_next()) {
+        cout << it.get() << ' ';
+        it++;
     }
-
-    l1.insert_after(node, 100);
-    l1.displayAll();
+    cout << '\n';
 }
