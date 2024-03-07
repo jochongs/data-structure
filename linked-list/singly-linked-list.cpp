@@ -4,7 +4,6 @@ using namespace std;
 template <typename T> class LinkedList;
 template <typename T> class Iterator;
 
-// 노드
 template <typename T> class Node {
     public:
         T data;
@@ -77,7 +76,6 @@ template <typename T> class Iterator {
         Node<T>* curr_node;
 };
 
-// 단방향 링크드 리스트
 template <typename T> class LinkedList {
     public: ;
         LinkedList() {
