@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+// 기본 버블 정렬
 void bubble_sort(int arr[], int size) {
     int cal_cnt = 0;
     for (int i = 0; i < size; i++) {
