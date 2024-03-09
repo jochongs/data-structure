@@ -23,6 +23,56 @@ template <typename T> class Node {
     friend class Iterator<T>;
 };
 
+template <typename T> class Iterator {
+    public: 
+        Iterator(Node<T>* node) {
+            this->curr_node = node;
+        }
+
+        bool has_next() {
+            if (this->curr_node->next == nullptr) {
+                return false;
+            }
+
+            return true;
+        }
+
+        T get() {
+            return curr_node->data;
+        }
+
+        void move_next() {
+            if (this->curr_node == nullptr) {
+                return;
+            }
+
+            this->curr_node = this->curr_node->next;
+        }
+
+        Iterator<T>& operator++() {
+            if (this->has_next()) {
+                this->move_next();
+            }
+            return *this;
+        }
+
+        Iterator<T> operator++(int) {
+            Iterator<T> temp = *this;
+            this->move_next();
+            return temp;
+        }
+
+        bool operator==(Iterator<T> it) {
+            return (it.curr_node == this->curr_node);
+        }
+
+        bool operator!=(Iterator<T> it) {
+            return (it.curr_node != this->curr_node);
+        }
+    private:
+        Node<T>* curr_node;
+};
+
 template <typename T> class DoublyLinkedList {
     public: 
         DoublyLinkedList() {
@@ -30,6 +80,8 @@ template <typename T> class DoublyLinkedList {
             this->tail = nullptr;
             this->length = 0;
         }
+
+        typedef Iterator<T> Iterator;
 
         void push_back(T data) {
             Node<T>* newNode = new Node<T>(data);
@@ -55,7 +107,7 @@ template <typename T> class DoublyLinkedList {
             }
 
             newNode->next = this->head;
-            this->head->prev = newNode->next;
+            this->head->prev = newNode;
             this->head = newNode;
         }
 
@@ -82,14 +134,14 @@ template <typename T> class DoublyLinkedList {
             }
 
             this->length--;
+            Node<T>* old_head = this->head;
             if (this->head == this->tail) {
                 this->head = this->tail = nullptr;
-                return;
+            } else { 
+                old_head->next->prev = nullptr;
+                this->head = old_head->next;
             }
 
-            Node<T>* old_head = this->head;
-            old_head->next->prev = nullptr;
-            this->head = old_head->next;
             delete old_head;
         }
 
@@ -112,6 +164,14 @@ template <typename T> class DoublyLinkedList {
             cout << '\n';
             return;
         }
+    
+        Iterator beign() {
+            return Iterator(this->head);
+        }
+
+        Iterator end() {
+            return Iterator(this->tail);
+        }
     private: 
         Node<T>* head;
         Node<T>* tail;
@@ -125,11 +185,11 @@ int main() {
     list.push_back(2);
     list.push_front(3);
     list.push_back(3);
-    list.remove_back();
-    list.remove_front();
-    list.remove_front();
-    list.remove_front();
-    list.remove_front();
+    list.push_back(3);
 
-    list.dispalyAllNode();
+    DoublyLinkedList<int>::Iterator it = list.beign();
+
+    for (it = list.beign(); it != nullptr; it++) {
+        cout << it.get() << ' ';
+    }
 }
