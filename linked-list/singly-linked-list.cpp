@@ -7,10 +7,10 @@ template <typename T> class Iterator;
 template <typename T> class Node {
     public:
         T data;
-    Node(T data) {
-        this->data = data;
-        this->next = nullptr;
-    }
+        Node(T data) {
+            this->data = data;
+            this->next = nullptr;
+        }
 
     private:
         Node<T>* next;
