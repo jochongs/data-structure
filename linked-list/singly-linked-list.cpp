@@ -56,8 +56,8 @@ template <typename T> class Iterator {
         // 후위 증가 연산자 오버로딩
         Iterator<T> operator++(int) {
             Iterator<T> temp = *this; // 현재 객체의 복사본 생성
-            if (this->has_next()) {
-                this->move_next();
+            if (this->curr_node != nullptr) {
+                this->curr_node = this->curr_node->next;
             }
             return temp;        
         }
