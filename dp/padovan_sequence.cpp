@@ -1,19 +1,26 @@
 #include <iostream>
 using namespace std;
 
-int padovan_sequnce(int num, int memo[]) {
+long padovan_sequnce(long num, long memo[]) {
     if (memo[num - 1] != 0) {
         return memo[num - 1];
     }
+
+    if (num <= 3) {
+        return 1;
+    }
     
-    return padovan_sequnce(num - 2, memo) + padovan_sequnce(num - 3, memo);
+    memo[num - 1] = padovan_sequnce(num - 2, memo) + padovan_sequnce(num - 3, memo);
+    return memo[num - 1];
 }
 
 int main() {
-    int memo[100000] = { 1, 1, 1, };
+    long memo[100000] = { 1, 1, 1, };
 
-    int n = 0;
+    long n = 0;
     cin >> n;
 
     cout << padovan_sequnce(n, memo);
+
+    return 0;
 }
