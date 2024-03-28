@@ -94,7 +94,7 @@ int main() {
         }
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < jewel_list.size(); i++) {
         for (int j = 0; j <= n; j++) {
             cout.width(3);
             cout << memo[i][j] << ' ';
